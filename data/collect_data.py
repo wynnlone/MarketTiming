@@ -24,7 +24,7 @@ index = ['^DJI','^GSPC','^IXIC']
 
 
 
-tickers = 
+tickers = list_SP500
 
 pbar = tqdm(tickers, unit="ticker")
 
