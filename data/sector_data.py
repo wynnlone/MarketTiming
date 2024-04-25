@@ -24,7 +24,7 @@ df = df.sort_values(by='ticker')
 # df = pd.concat([df, new_df], ignore_index=True)
 
 
-folder_path = 'yf\SP500' # Replace to the folder containing .csv fata files
+folder_path = 'yf' # Replace to the folder containing .csv fata files
 
 file_names = os.listdir(folder_path)
 
