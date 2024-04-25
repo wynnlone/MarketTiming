@@ -33,7 +33,7 @@ def get_data(ticker: str, index_name:str = '^GSPC', rf_name:str = 'DGS1',
     df.drop_duplicates(subset=['formatted_date'], inplace=True)
     
     df_index = pd.read_csv(f'../data/yf/{index_name}.csv', parse_dates=['formatted_date'])
-    df_rf = pd.read_csv(f'../data/{rf_name}.csv', parse_dates=['DATE'])
+    df_rf = pd.read_csv(f'../data/yf/{rf_name}.csv', parse_dates=['DATE'])
         
     ## handle stock missing value
     fill_list = ['high','low','open','close']
