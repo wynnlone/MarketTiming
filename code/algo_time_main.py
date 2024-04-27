@@ -51,7 +51,7 @@ def get_max_pair(ticker, start = 5, stop = 251, step = 5):
 
     return sorted_items[0][0], sorted_items
 
-def get_max_ma(ticker, start = 2, stop = 251, step = 5):
+def get_max_ma(ticker, start = 2, stop = 251, step = 1):
     
     pairs = itertools.product([1], range(start, stop, step))
     
@@ -87,7 +87,7 @@ if __name__ == '__main__':
     #save_name = f'{ticker} US10y.csv'
     
     # get pair of ma to max 
-    #pair, all_pairs = get_max_ma(ticker)
+    #pair, all_pairs = get_max_pair(ticker)
         
     # run strategy
     df_timing = timing_stra(ticker, pair = pair, 
