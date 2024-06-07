@@ -107,7 +107,7 @@ def time_plot(df_timing):
     return None
 
 
-def pair_plot(all_pairs:list, base:tuple=None):  
+def pair_plot(all_pairs:list, base:tuple=None, top_num:int=20):  
     all_pairs = all_pairs.copy()
     total_pair_num = len(all_pairs)
     if_base = False
@@ -118,25 +118,25 @@ def pair_plot(all_pairs:list, base:tuple=None):
         base_value = base[1]
     
     all_pairs = sorted(all_pairs, key=lambda x: x[1], reverse=True)
-    first_50 = all_pairs[:20]
+    top_pairs = all_pairs[:top_num]
     
     base_index = next((i for i, tup in enumerate(all_pairs) if isinstance(tup[0], str)), None)
     
-    x_values = [f'{tup[0]}' for tup in first_50]
-    y_values = [tup[1] for tup in first_50]
+    x_values = [f'{tup[0]}' for tup in top_pairs]
+    y_values = [tup[1] for tup in top_pairs]
     pair_mean = np.mean(y_values)
     pair_std = np.std(y_values)
     
     colors = ['#069AF3' if i != base_index else 'orange' for i in range(len(x_values))]
 
-    # Plot top 50
+    # Plot top 20
     plt.figure(figsize=(10, 10))
     plt.barh(x_values, y_values, color=colors)
     plt.xlabel('Terminal value')
     plt.ylabel('pairs')
-    plt.title(f'Terminal value of {ticker} MA2 pairs (Top 20)', fontsize=20)
+    plt.title(f'Terminal value of {ticker} MA2 pairs (Top {top_num})', fontsize=20)
     plt.gca().invert_yaxis()  # Invert y-axis to have the highest value at the top
-    plt.savefig(f'{ticker} MA2 pairs terminal value (Top 20)')
+    plt.savefig(f'{ticker} MA2 pairs terminal value (Top {top_num})')
     
     # Plot pair_hist
     pair_hist = [pair[1] for pair in all_pairs]
