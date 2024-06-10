@@ -94,7 +94,7 @@ def time_plot(df_timing):
     df_plot.set_index('formatted_date', inplace=True)
     #df_plot.plot(xlabel='' )
     
-    fig = plt.figure(figsize=(16, 9))
+    fig = plt.figure(figsize=(10, 8))
     
     plt.plot(df_plot['equity_curve_base'],label=ticker)
     plt.plot(df_plot['equity_curve'],label=f'MA2{pair}')
@@ -106,10 +106,15 @@ def time_plot(df_timing):
     
     return None
 
-
-def pair_plot(all_pairs:list, base:tuple=None, top_num:int=20):  
+def pair_plot(all_pairs:list, base:tuple=None, top_num:int=20):
+    
     all_pairs = all_pairs.copy()
     total_pair_num = len(all_pairs)
+    
+    hm_rows = []
+    for (x, y), z in all_pairs:
+        hm_rows.append({'MA short': x, 'MA long': y, 'z': z})
+    
     if_base = False
     
     if type(base) is tuple:
@@ -130,7 +135,7 @@ def pair_plot(all_pairs:list, base:tuple=None, top_num:int=20):
     colors = ['#069AF3' if i != base_index else 'orange' for i in range(len(x_values))]
 
     # Plot top 20
-    plt.figure(figsize=(10, 10))
+    plt.figure(figsize=(10, 8))
     plt.barh(x_values, y_values, color=colors)
     plt.xlabel('Terminal value')
     plt.ylabel('pairs')
@@ -143,7 +148,7 @@ def pair_plot(all_pairs:list, base:tuple=None, top_num:int=20):
     num_bins = 10
     bins = np.histogram_bin_edges(pair_hist, bins=num_bins, range=(min(pair_hist),max(pair_hist)*(1+1/100)))
     
-    plt.figure(figsize=(10, 5))
+    plt.figure(figsize=(10, 8))
     sns.histplot(pair_hist, kde=True, bins=num_bins, color='#069AF3')
    
     if if_base:
@@ -154,8 +159,19 @@ def pair_plot(all_pairs:list, base:tuple=None, top_num:int=20):
     plt.title(f'n = {total_pair_num}, mean = {pair_mean:.4}, std = {pair_std:.2}', fontsize=12)
     plt.savefig(f'{ticker} MA2 pairs terminal value dist.png')
     
-    return None
+    # Plot heatmap
+    df_hm = pd.DataFrame(hm_rows)
+    df_hm = df_hm.pivot(index='MA short', columns='MA long', values='z')
     
+    # Plotting the heatmap
+    plt.figure(figsize=(10, 8))
+    sns.heatmap(df_hm, cmap='viridis')
+    plt.xlabel('MA_short')
+    plt.ylabel('MA_long')
+    plt.title(f'{ticker} MA2 pairs terminal value heatmap',fontsize = 20)
+    plt.savefig(f'{ticker} MA2 pairs terminal value heatmap.png')
+    
+    return None
 
 
 if __name__ == '__main__':
